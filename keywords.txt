@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map for InterruptButton
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Palatis	KEYWORD1
+RestClient	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+addHeader	KEYWORD2
+removeHeader	KEYWORD2
+numHeaders	KEYWORD2
+getHeader	KEYWORD2
+getHeadersBegin	KEYWORD2
+getHeadersEnd	KEYWORD2
+setContentType	KEYWORD2
+get	KEYWORD2
+post	KEYWORD2
+put	KEYWORD2
+del	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+DEBUG_REST  LITERAL1
