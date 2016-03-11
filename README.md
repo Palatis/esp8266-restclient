@@ -52,7 +52,7 @@ Palatis::RestClient<WiFiClientSecure, 443> restClient(wifiClient, "api.twitch.tv
 
 All methods return the response string directly, or "FAILED" when connection fails to establish.
 
-### `get(const char * const path)`
+### get(const char * const path)
 
 Start making requests!
 
