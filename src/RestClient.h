@@ -200,38 +200,25 @@ class RestClient {
             return "FAILED";
 
         // write the request
-        REST_DEBUGP(method); REST_DEBUGP(' '); REST_DEBUGP(path); REST_DEBUGP(" HTTP/1.1\r\n");
-        REST_DEBUGP("Host: "); REST_DEBUGP(_host); REST_DEBUGP("\r\n");
-        REST_DEBUGP("Connection: close\r\n");
-        _client.print(method); _client.print(' '); _client.print(path); _client.print(" HTTP/1.1\r\n");
-        _client.print("Host: "); _client.print(_host); _client.print("\r\n");
-        _client.print("Connection: close\r\n");
+        _print(method)._print(' ')._print(path)._print(" HTTP/1.1\r\n");
+        _print("Host: ")._print(_host)._print(':')._print(_port)._print("\r\n");
+        _print("Connection: close\r\n");
 
-        for (auto i = _headers.begin();i != _headers.end();++i) {
-            REST_DEBUGP(i->first); REST_DEBUGP(": "); REST_DEBUGP(i->second); REST_DEBUGP("\r\n");
-            _client.print(i->first); _client.print(": "); _client.print(i->second); _client.print("\r\n");
-        }
+        for (auto i = _headers.begin();i != _headers.end();++i)
+            _print(i->first)._print(": ")._print(i->second)._print("\r\n");
 
-        if (body != NULL) {
-            REST_DEBUGP("Content-Length: "); REST_DEBUGP(strlen(body)); REST_DEBUGP("\r\n");
-            REST_DEBUGP("Content-Type: "); REST_DEBUGP(_contentType); REST_DEBUGP("\r\n\r\n");
-            _client.print("Content-Length: "); _client.print(strlen(body)); _client.print("\r\n");
-            _client.print("Content-Type: "); _client.print(_contentType); _client.print("\r\n\r\n");
-            
-            REST_DEBUGP(body);
-            _client.print(body);
-            
-            REST_DEBUGP("\r\n");
-            _client.print("\r\n");
+        if (body == NULL) {
+            _print("Content-Length: 0\r\n");
+            _print("Content-Type: ")._print(_contentType)._print("\r\n");
         } else {
-            REST_DEBUGP("Content-Length: 0\r\n");
-            REST_DEBUGP("Content-Type: "); REST_DEBUGP(_contentType); REST_DEBUGP("\r\n");
-            _client.print("Content-Length: 0\r\n");
-            _client.print("Content-Type: "); _client.print(_contentType); _client.print("\r\n");
+            _print("Content-Length: ")._print(strlen(body))._print("\r\n");
+            _print("Content-Type: ")._print(_contentType)._print("\r\n");
+            _print("\r\n");
+            _print(body);
+            _print("\r\n");
         }
 
-        REST_DEBUGP("\r\n");
-        _client.print("\r\n");
+        _print("\r\n");
 
         size_t start_millis = millis();
         while (_client && !_client.available() && millis() - start_millis < 5000)
@@ -254,6 +241,13 @@ class RestClient {
   private:
     CLIENT_T * const _pclient;
     CLIENT_T & _client;
+
+    template<typename T>
+    inline RestClient<CLIENT_T, DEFAULT_PORT> & _print(T const data) {
+        REST_DEBUGP(data);
+        _client.print(data);
+        return *this;
+    }
     
     const char * const _host;
     uint16_t const _port;
