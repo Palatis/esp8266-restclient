@@ -24,15 +24,15 @@ You need to have the `ESP8266` board support already included.
 RestClient is generic, to be able to support different types of clients.
 so you may use a basic WiFiClient, or a ssl-enabled WiFiClientSecure, or even HardwareSerial with a wrapper class.
 the CLIENT_T should support these member functions and constructors:
-    - CLIENT_T::CLIENT_T()
-    - CLIENT_T::print(const char * const)
-    - CLIENT_T::print(const char)
-    - CLIENT_T::print(int)
-    - CLIENT_T::available()
-    - CLIENT_T::bool()
-    - CLIENT_T::read()
-    - CLIENT_T::connect(const char * const host, uint16_t port)
-    - CLIENT_T::stop()
+- CLIENT_T::CLIENT_T()
+- CLIENT_T::print(const char * const)
+- CLIENT_T::print(const char)
+- CLIENT_T::print(int)
+- CLIENT_T::available()
+- CLIENT_T::bool()
+- CLIENT_T::read()
+- CLIENT_T::connect(const char * const host, uint16_t port)
+- CLIENT_T::stop()
 
 if you don't give it a client, it will make one for you (will call the default c-tor of CLIENT_T).
 ```c++
