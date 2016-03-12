@@ -221,15 +221,23 @@ class RestClient {
             REST_DEBUGP(body);
             _client.print(body);
             
-            REST_DEBUGP("\r\n\r\n");
-            _client.print("\r\n\r\n");            
+            REST_DEBUGP("\r\n");
+            _client.print("\r\n");
+        } else {
+            REST_DEBUGP("Content-Length: 0\r\n");
+            REST_DEBUGP("Content-Type: "); REST_DEBUGP(_contentType); REST_DEBUGP("\r\n");
+            _client.print("Content-Length: 0\r\n");
+            _client.print("Content-Type: "); _client.print(_contentType); _client.print("\r\n");
         }
 
         REST_DEBUGP("\r\n");
         _client.print("\r\n");
 
-        while (_client && !_client.available())
+        size_t start_millis = millis();
+        while (_client && !_client.available() && millis() - start_millis < 5000)
             delay(0);
+        if (millis() - start_millis > 5000)
+            return "TIMEOUT";
 
         // read back the response
         String response;
