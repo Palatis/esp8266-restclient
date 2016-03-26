@@ -196,8 +196,11 @@ class RestClient {
      */
     String request(const char * const method, const char * const path, const char * const body) {
         REST_DEBUGF("query(): free heap = %d\n", ESP.getFreeHeap());
-        if (!_client.connect(_host, _port))
+        if (!_client.connect(_host, _port)) {
+            REST_DEBUGP("Connection Failed\n");
+            _client.stop();
             return "FAILED";
+        }
 
         // write the request
         _print(method)._print(' ')._print(path)._print(" HTTP/1.1\r\n");
@@ -223,8 +226,11 @@ class RestClient {
         size_t start_millis = millis();
         while (_client && !_client.available() && millis() - start_millis < 5000)
             delay(0);
-        if (millis() - start_millis > 5000)
+        if (millis() - start_millis > 5000) {
+            REST_DEBUGP("Connection Timeout\n");
+            _client.stop();
             return "TIMEOUT";
+        }
 
         // read back the response
         String response;
@@ -234,7 +240,7 @@ class RestClient {
         }
         _client.stop();
         
-        REST_DEBUGP(response);
+        REST_DEBUGLN(response);
         return response;
     }
 
