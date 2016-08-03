@@ -53,6 +53,8 @@ class RestClient {
     ~RestClient() {
         delete _pclient;
     }
+    
+    
 
     /**
      * add a new header to the back of the headers. O(1)
@@ -244,6 +246,14 @@ class RestClient {
         return response;
     }
 
+    const char * const getHost() const {
+        return _host;
+    }
+    
+    uint16_t const getPort() const {
+        return _port;
+    }
+
   private:
     CLIENT_T * const _pclient;
     CLIENT_T & _client;
@@ -252,6 +262,7 @@ class RestClient {
     inline RestClient<CLIENT_T, DEFAULT_PORT> & _print(T const data) {
         REST_DEBUGP(data);
         _client.print(data);
+        delay(0);
         return *this;
     }
     
